@@ -131,7 +131,9 @@ export class App {
     const titleEl = document.getElementById('reader-title');
     if (titleEl && item) titleEl.textContent = item.title;
 
-    await this.stateStore.saveLibraryItem({ ...item!, lastAccessed: new Date() });
+    if (item) {
+      await this.stateStore.saveLibraryItem({ ...item, lastAccessed: new Date() });
+    }
 
     const container = document.getElementById('h5p-container');
     if (!container || !pkg) return;
