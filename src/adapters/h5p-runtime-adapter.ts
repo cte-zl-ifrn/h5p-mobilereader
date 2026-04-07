@@ -16,7 +16,6 @@ export interface H5PAdapterOptions {
 
 export class H5PRuntimeAdapter {
   private diagnostics: DiagnosticsService;
-  private currentContentId: string | null = null;
   private saveInterval: ReturnType<typeof setInterval> | null = null;
 
   constructor(diagnostics: DiagnosticsService) {
