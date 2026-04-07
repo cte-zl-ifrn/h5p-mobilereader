@@ -108,7 +108,7 @@ export class H5PRuntimeAdapter {
     const H5P = (window as any).H5P;
     if (H5P?.externalDispatcher) {
       H5P.externalDispatcher.on('xAPI', (event: unknown) => {
-        this.diagnostics.debug('xAPI event received', { event: JSON.stringify(event) });
+        this.diagnostics.debug('xAPI event received', { event });
         callback(event);
       });
     }
