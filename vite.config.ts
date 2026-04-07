@@ -6,6 +6,6 @@ export default defineConfig({
     sourcemap: true,
   },
   optimizeDeps: {
-    include: ['h5p-standalone', 'jszip'],
+    include: ['jszip'],
   },
 });
