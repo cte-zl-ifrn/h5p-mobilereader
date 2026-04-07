@@ -16,7 +16,6 @@ export interface H5PAdapterOptions {
 
 export class H5PRuntimeAdapter {
   private diagnostics: DiagnosticsService;
-  private currentContentId: string | null = null;
   private saveInterval: ReturnType<typeof setInterval> | null = null;
 
   constructor(diagnostics: DiagnosticsService) {
@@ -57,7 +56,8 @@ export class H5PRuntimeAdapter {
       }
 
       if (saveFreq && onStateChange) {
-        this.setupAutoSave(saveFreq, onStateChange, savedState?.contentId ?? 'unknown');
+        const contentId = savedState?.contentId ?? contentPath;
+        this.setupAutoSave(saveFreq, onStateChange, contentId);
       }
 
     } catch (error) {
@@ -108,7 +108,7 @@ export class H5PRuntimeAdapter {
     const H5P = (window as any).H5P;
     if (H5P?.externalDispatcher) {
       H5P.externalDispatcher.on('xAPI', (event: unknown) => {
-        this.diagnostics.debug('xAPI event received', { event: JSON.stringify(event) });
+        this.diagnostics.debug('xAPI event received', { event });
         callback(event);
       });
     }
