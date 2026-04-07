@@ -4,6 +4,7 @@ import { MetadataIndexer } from '../services/metadata-indexer';
 import { InMemoryStateStore } from '../services/state-store';
 import { H5PRuntimeAdapter } from '../adapters/h5p-runtime-adapter';
 import { LibraryItem } from '../types';
+import { escapeHtml } from './library-view';
 
 export class App {
   private diagnostics: DiagnosticsService;
@@ -90,9 +91,9 @@ export class App {
     return `
       <div class="library-card ${statusClass}">
         <div class="card-info">
-          <h3 class="card-title">${this.escapeHtml(item.title)}</h3>
-          <p class="card-type">${this.escapeHtml(item.primaryContentType)}</p>
-          ${item.author ? `<p class="card-author">by ${this.escapeHtml(item.author)}</p>` : ''}
+          <h3 class="card-title">${escapeHtml(item.title)}</h3>
+          <p class="card-type">${escapeHtml(item.primaryContentType)}</p>
+          ${item.author ? `<p class="card-author">by ${escapeHtml(item.author)}</p>` : ''}
           <p class="card-date">Imported: ${item.importedAt.toLocaleDateString()}</p>
           ${progressBar}
           ${item.status === 'broken' ? '<p class="card-warning">⚠ Some libraries may be missing</p>' : ''}
@@ -249,8 +250,8 @@ export class App {
             <div class="log-entry log-${e.level}">
               <span class="log-time">${e.timestamp.toISOString()}</span>
               <span class="log-level">[${e.level.toUpperCase()}]</span>
-              <span class="log-msg">${this.escapeHtml(e.message)}</span>
-              ${e.context ? `<pre class="log-context">${this.escapeHtml(JSON.stringify(e.context, null, 2))}</pre>` : ''}
+              <span class="log-msg">${escapeHtml(e.message)}</span>
+              ${e.context ? `<pre class="log-context">${escapeHtml(JSON.stringify(e.context, null, 2))}</pre>` : ''}
             </div>
           `).join('')}
         </div>
@@ -275,7 +276,4 @@ export class App {
     });
   }
 
-  private escapeHtml(str: string): string {
-    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-  }
 }
