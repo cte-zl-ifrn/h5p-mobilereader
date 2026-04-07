@@ -30,7 +30,6 @@ export class H5PRuntimeAdapter {
       playerAssetsPath,
       savedState,
       enableReporting = false,
-      enableFullscreen = false,
       saveFreq = 30,
       onXapi,
       onStateChange,
