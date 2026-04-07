@@ -27,22 +27,22 @@ describe('ContentService', () => {
   });
 
   describe('calculateHash', () => {
-    it('returns consistent hash for same input', () => {
+    it('returns consistent hash for same input', async () => {
       const buffer = new TextEncoder().encode('hello world').buffer;
-      const hash1 = service.calculateHash(buffer);
-      const hash2 = service.calculateHash(buffer);
+      const hash1 = await service.calculateHash(buffer);
+      const hash2 = await service.calculateHash(buffer);
       expect(hash1).toBe(hash2);
     });
 
-    it('returns different hashes for different inputs', () => {
+    it('returns different hashes for different inputs', async () => {
       const buf1 = new TextEncoder().encode('hello').buffer;
       const buf2 = new TextEncoder().encode('world').buffer;
-      expect(service.calculateHash(buf1)).not.toBe(service.calculateHash(buf2));
+      expect(await service.calculateHash(buf1)).not.toBe(await service.calculateHash(buf2));
     });
 
-    it('returns a hex string of length 64', () => {
+    it('returns a hex string of length 64', async () => {
       const buffer = new TextEncoder().encode('test').buffer;
-      const hash = service.calculateHash(buffer);
+      const hash = await service.calculateHash(buffer);
       expect(hash).toMatch(/^[a-f0-9]{64}$/);
     });
   });

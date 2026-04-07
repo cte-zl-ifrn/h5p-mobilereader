@@ -1,4 +1,3 @@
-import { createHash } from 'crypto';
 import { ImportResult, ValidationError, H5PJson, DetectedLibrary } from '../types';
 
 export class ContentService {
@@ -9,7 +8,7 @@ export class ContentService {
   }
 
   async importPackage(filePath: string, fileBuffer: ArrayBuffer): Promise<ImportResult> {
-    const hash = this.calculateHash(fileBuffer);
+    const hash = await this.calculateHash(fileBuffer);
     const contentId = this.generateContentId(hash);
     
     const validationResult = await this.validateStructure(fileBuffer);
@@ -51,10 +50,11 @@ export class ContentService {
     };
   }
 
-  calculateHash(buffer: ArrayBuffer): string {
-    const hash = createHash('sha256');
-    hash.update(Buffer.from(buffer));
-    return hash.digest('hex');
+  async calculateHash(buffer: ArrayBuffer): Promise<string> {
+    const hashBuffer = await globalThis.crypto.subtle.digest('SHA-256', buffer);
+    return Array.from(new Uint8Array(hashBuffer))
+      .map(b => b.toString(16).padStart(2, '0'))
+      .join('');
   }
 
   generateContentId(hash: string): string {
