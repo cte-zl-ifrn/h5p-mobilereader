@@ -57,7 +57,8 @@ export class H5PRuntimeAdapter {
       }
 
       if (saveFreq && onStateChange) {
-        this.setupAutoSave(saveFreq, onStateChange, savedState?.contentId ?? 'unknown');
+        const contentId = savedState?.contentId ?? contentPath;
+        this.setupAutoSave(saveFreq, onStateChange, contentId);
       }
 
     } catch (error) {
